@@ -1,4 +1,5 @@
-import { devices, PlaywrightTestConfig } from "@playwright/test";
+import type { PlaywrightTestConfig } from "@playwright/test";
+import { devices } from "@playwright/test";
 import dotEnv from "dotenv";
 import * as os from "os";
 import * as path from "path";
@@ -7,8 +8,9 @@ dotEnv.config({ path: ".env" });
 
 const outputDir = path.join(__dirname, "test-results");
 
-const DEFAULT_NAVIGATION_TIMEOUT = 15000;
-
+// Dev Server on local can be slow to start up and process requests
+const DEFAULT_NAVIGATION_TIMEOUT = process.env.CI ? 15000 : 50000;
+const DEFAULT_EXPECT_TIMEOUT = process.env.CI ? 10000 : 50000;
 const headless = !!process.env.CI || !!process.env.PLAYWRIGHT_HEADLESS;
 
 const IS_EMBED_TEST = process.argv.some((a) => a.startsWith("--project=@calcom/embed-core"));
@@ -33,7 +35,8 @@ if (IS_EMBED_TEST) {
 
 const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
-  retries: 1,
+  // Fail fast and give failure summary as soon as possible during local testing
+  retries: process.env.CI ? 1 : 0,
   workers: os.cpus().length,
   timeout: 60_000,
   maxFailures: headless ? 10 : undefined,
@@ -56,6 +59,9 @@ const config: PlaywrightTestConfig = {
       name: "@calcom/web",
       testDir: "./apps/web/playwright",
       testMatch: /.*\.e2e\.tsx?/,
+      expect: {
+        timeout: DEFAULT_EXPECT_TIMEOUT,
+      },
       use: {
         ...devices["Desktop Chrome"],
         /** If navigation takes more than this, then something's wrong, let's fail fast. */
@@ -66,6 +72,9 @@ const config: PlaywrightTestConfig = {
       name: "@calcom/app-store",
       testDir: "./packages/app-store/",
       testMatch: /.*\.e2e\.tsx?/,
+      expect: {
+        timeout: DEFAULT_EXPECT_TIMEOUT,
+      },
       use: {
         ...devices["Desktop Chrome"],
         /** If navigation takes more than this, then something's wrong, let's fail fast. */

@@ -356,7 +356,12 @@ export const FormBuilder = function FormBuilder({
             );
           })}
         </ul>
-        <Button color="minimal" onClick={addField} className="mt-4" StartIcon={FiPlus}>
+        <Button
+          color="minimal"
+          data-testid="add-field"
+          onClick={addField}
+          className="mt-4"
+          StartIcon={FiPlus}>
           {addFieldLabel}
         </Button>
       </div>
@@ -403,6 +408,7 @@ export const FormBuilder = function FormBuilder({
               }}>
               <SelectField
                 required
+                id="test-field-type"
                 isDisabled={
                   fieldForm.getValues("editable") === "system" ||
                   fieldForm.getValues("editable") === "system-but-optional"
@@ -471,7 +477,9 @@ export const FormBuilder = function FormBuilder({
               />
               <DialogFooter>
                 <DialogClose color="secondary">Cancel</DialogClose>
-                <Button type="submit">{isFieldEditMode ? t("save") : t("add")}</Button>
+                <Button data-testid="field-add-save" type="submit">
+                  {isFieldEditMode ? t("save") : t("add")}
+                </Button>
               </DialogFooter>
             </Form>
           </div>
