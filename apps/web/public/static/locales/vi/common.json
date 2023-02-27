@@ -598,7 +598,6 @@
   "new_event_type_heading": "Tạo loại sự kiện đầu tiên của bạn",
   "new_event_type_description": "Các loại sự kiện giúp bạn chia sẻ liên kết hiển thị thời gian có sẵn trên lịch của bạn và cho phép mọi người đặt lịch hẹn với bạn.",
   "new_event_title": "Thêm một loại sự kiện mới",
-  "new_event_subtitle": "Tạo một loại sự kiện dưới tên của bạn hoặc nhóm.",
   "new_team_event": "Thêm một loại sự kiện mới cho nhóm",
   "new_event_description": "Tạo một loại sự kiện mới để mọi người đặt lịch hẹn.",
   "event_type_created_successfully": "Đã tạo thành công loại sự kiện {{eventTypeTitle}}",
